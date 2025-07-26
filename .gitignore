@@ -1,0 +1,5 @@
+env
+.env
+document_portal.egg-info
+*.pdf
+document_portal
