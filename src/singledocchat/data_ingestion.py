@@ -11,7 +11,7 @@ from utils.model_loader import ModelLoader
 
 
 class SingleDocIngestor:
-    def __init__(self,data_dir: str = "data/single_doc_chat", faiss_dir: str = "faiss_index"):
+    def __init__(self,data_dir: str = "data/single_document_chat", faiss_dir: str = "faiss_index"):
         try:
             self.log = CustomLogger().get_logger(__name__)
             self.data_dir = Path(data_dir)
@@ -35,6 +35,7 @@ class SingleDocIngestor:
                 with open(temp_path, "wb") as f_out:
                     f_out.write(uploaded_file.read()) 
                 self.log.info("PDF saved for ingestion", filename=uploaded_file.name)
+                
                 loader = PyPDFLoader(str(temp_path))
                 docs = loader.load()
                 documents.extend(docs)

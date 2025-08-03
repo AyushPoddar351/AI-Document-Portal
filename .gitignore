@@ -7,6 +7,5 @@ venv/
 __pycache__/
 logs/
 *.pyc
-test.py
 .vscode
 SS
