@@ -8,7 +8,6 @@ pypdf
 faiss-cpu
 structlog
 PyMuPDF
-structlog
 pandas
 streamlit
 langchain-core[tracing]
