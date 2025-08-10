@@ -17,18 +17,20 @@ from src.docanalyser.analyze import DocumentAnalyzer
 from src.doccompare.document_compare import DocumentComparatorLLM
 from src.document_chat.retrieval import ConversationalRAG
 
-# BASE_DIR = Path(__file__).resolve().parent.parent  # project root
+from pathlib import Path
 
-# app.mount(
-#     "/static",
-#     StaticFiles(directory=BASE_DIR / "static"),
-#     name="static"
-# )
+BASE_DIR = Path(__file__).resolve().parent.parent  # project root
 
 FAISS_BASE = os.getenv("FAISS_BASE", "faiss_index")
 UPLOAD_BASE = os.getenv("UPLOAD_BASE", "data")
 
 app = FastAPI(title="Document Portal API", version="0.1")
+
+app.mount(
+    "/static",
+    StaticFiles(directory=BASE_DIR / "static"),
+    name="static"
+)
 
 app.add_middleware(
     CORSMiddleware,
