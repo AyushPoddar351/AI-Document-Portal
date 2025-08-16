@@ -1,44 +1,46 @@
-import os,sys
 
+import os
+import sys
 from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
-from langchain_groq import ChatGroq
-
 from utils.config_loader import load_config
+from .config_loader import load_config
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
+#from langchain_openai import ChatOpenAI
 from logger.custom_logger import CustomLogger
 from exception.custom_exception import DocumentPortalException
-
 log = CustomLogger().get_logger(__name__)
 
 class ModelLoader:
+    
     """
-    This class is responsible for loading the models.
+    A utility class to load embedding models and LLM models.
     """
+    
     def __init__(self):
         
         load_dotenv()
         self._validate_env()
-        self.config = load_config()
-        log.info("Config loaded successfully", config_keys=list(self.config.keys()))
-
-
+        self.config=load_config()
+        log.info("Configuration loaded successfully", config_keys=list(self.config.keys()))
+        
     def _validate_env(self):
         """
-        This method validates the environment variables.
+        Validate necessary environment variables.
+        Ensure API keys exist.
         """
-        required_env_vars = ["GROQ_API_KEY", "GOOGLE_API_KEY"]
-        self.api_keys = {key:os.getenv(key) for key in required_env_vars}
-        missing = [k for k, v in self.api_keys.items() if v is None]
+        required_vars=["GOOGLE_API_KEY","GROQ_API_KEY"]
+        self.api_keys={key:os.getenv(key) for key in required_vars}
+        missing = [k for k, v in self.api_keys.items() if not v]
         if missing:
-            log.error("Missing environment variables:", missing_vars=missing)
-            raise DocumentPortalException("Missing environment variables",sys)
-
-        log.info("Environment variables loaded successfully", available_keys = [k for k in self.api_keys if self.api_keys[k]])
-
-
+            log.error("Missing environment variables", missing_vars=missing)
+            raise DocumentPortalException("Missing environment variables", sys)
+        log.info("Environment variables validated", available_keys=[k for k in self.api_keys if self.api_keys[k]])
+        
     def load_embeddings(self):
         """
-        This method loads the embedding model.
+        Load and return the embedding model.
         """
         try:
             log.info("Loading embedding model...")
@@ -50,13 +52,15 @@ class ModelLoader:
         
     def load_llm(self):
         """
-        This method loads the llm.
+        Load and return the LLM model.
         """
+        """Load LLM dynamically based on provider in config."""
+        
         llm_block = self.config["llm"]
 
         log.info("Loading LLM...")
         
-        provider_key = os.getenv("LLM_PROVIDER", "google")  # Default groq
+        provider_key = os.getenv("LLM_PROVIDER", "groq")  # Default groq
         if provider_key not in llm_block:
             log.error("LLM provider not found in config", provider_key=provider_key)
             raise ValueError(f"Provider '{provider_key}' not found in config")
@@ -80,7 +84,7 @@ class ModelLoader:
         elif provider == "groq":
             llm=ChatGroq(
                 model=model_name,
-                api_key=self.api_keys["GROQ_API_KEY"],
+                api_key=self.api_keys["GROQ_API_KEY"], #type: ignore
                 temperature=temperature,
             )
             return llm
@@ -98,13 +102,16 @@ class ModelLoader:
         
     
     
-
 if __name__ == "__main__":
     loader = ModelLoader()
     
     # Test embedding model loading
     embeddings = loader.load_embeddings()
     print(f"Embedding Model Loaded: {embeddings}")
+    
+    # Test the ModelLoader
+    result=embeddings.embed_query("Hello, how are you?")
+    print(f"Embedding Result: {result}")
     
     # Test LLM loading based on YAML config
     llm = loader.load_llm()
