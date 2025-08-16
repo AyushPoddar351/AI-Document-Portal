@@ -11,7 +11,6 @@ from src.document_ingestion.data_ingestion import (
     DocHandler,
     DocumentComparator,
     ChatIngestor,
-    FaissManager,
 )
 from src.docanalyser.analyze import DocumentAnalyzer
 from src.doccompare.document_compare import DocumentComparatorLLM

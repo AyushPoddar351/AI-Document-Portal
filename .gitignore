@@ -11,3 +11,4 @@ logs/
 SS
 archive
 data
+faiss_index
