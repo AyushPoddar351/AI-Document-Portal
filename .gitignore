@@ -13,3 +13,4 @@ archive
 data
 faiss_index
 aws.txt
+main_archive.py

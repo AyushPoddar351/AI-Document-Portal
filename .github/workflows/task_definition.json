@@ -28,12 +28,7 @@
       ],
       "secrets": [
         {
-          "name": "GROQ_API_KEY",
-          "valueFrom": "arn:aws:secretsmanager:ap-southeast-2:954572609720:secret:LLMOPS_APIS-6k966f"
-        },
-        
-        {
-          "name": "GOOGLE_API_KEY",
+          "name": "API_KEYS",
           "valueFrom": "arn:aws:secretsmanager:ap-southeast-2:954572609720:secret:LLMOPS_APIS-6k966f"
         }
         
