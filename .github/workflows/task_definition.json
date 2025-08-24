@@ -1,14 +1,14 @@
 {
   "family": "documentportaltd",
   "networkMode": "awsvpc",
-  "executionRoleArn": "arn:aws:iam::459497895986:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::954572609720:role/ecsTaskExecutionRole",
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "1024",
   "memory": "8192",
   "containerDefinitions": [
     {
       "name": "document-portal-container",
-      "image": "459497895986.dkr.ecr.ap-southeast-2.amazonaws.com/documentportalliveclass",
+      "image": "954572609720.dkr.ecr.ap-southeast-2.amazonaws.com/documentportalliveclass",
       "cpu": 1024,
       "essential": true,
       "portMappings": [
@@ -29,12 +29,12 @@
       "secrets": [
         {
           "name": "GROQ_API_KEY",
-          "valueFrom": "arn:aws:secretsmanager:ap-southeast-2:459497895986:secret:api_keys-nZTtj8"
+          "valueFrom": "arn:aws:secretsmanager:ap-southeast-2:954572609720:secret:LLMOPS_APIS-6k966f"
         },
         
         {
           "name": "GOOGLE_API_KEY",
-          "valueFrom": "arn:aws:secretsmanager:ap-southeast-2:459497895986:secret:api_keys-nZTtj8"
+          "valueFrom": "arn:aws:secretsmanager:ap-southeast-2:954572609720:secret:LLMOPS_APIS-6k966f"
         }
         
       ],
